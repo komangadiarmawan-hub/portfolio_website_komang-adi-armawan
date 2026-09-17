@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas JavaScript - Hitung Nilai Akhir</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-blue-200 min-h-screen flex flex-col justify-between">
+
+    <!-- Navbar -->
+    <nav class="bg-yellow-700 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">PortfolioKu</h1>
+
+            <ul class="flex gap-6">
+                <li><a href="index.html" class="hover:text-yellow-300">Beranda</a></li>
+                <li><a href="pendidikan.html" class="hover:text-yellow-300">Pendidikan</a></li>
+                <li><a href="organisasi.html" class="hover:text-yellow-300">Organisasi</a></li>
+                <li><a href="galeri.html" class="hover:text-yellow-300">Galeri</a></li>
+                <li><a href="tugasjs.html" class="hover:text-yellow-300">Tugas JS</a></li>
+                <li><a href="kontak.html" class="hover:text-yellow-300">Kontak</a></li>
+                
+            </ul>
+        </div>
+    </nav>
+
+    
+    <section class="container mx-auto py-12 px-6 flex-grow">
+
+        <h2 class="text-4xl font-bold text-center mb-4">
+            Tugas JavaScript: Hitung Nilai Akhir
+        </h2>
+        <p class="text-center text-gray-700 mb-8 max-w-xl mx-auto">
+            Tugas JavaScript untuk menghitung nilai akhir mata kuliah berdasarkan bobot 
+            Tugas (20%), UTS (30%), dan UAS (50%).
+        </p>
+
+        <div class="bg-white p-8 rounded-xl shadow-lg max-w-lg mx-auto">
+            <form id="calcForm" onsubmit="hitungNilai(event)">
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Nama Mata Kuliah</label>
+                    <input type="text" id="matkul" required placeholder="Contoh: Pemrograman Web"
+                        class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Nilai Tugas (20%)</label>
+                    <input type="number" id="tugas" min="0" max="100" required placeholder="0 - 100"
+                        class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-semibold mb-2">Nilai UTS (30%)</label>
+                    <input type="number" id="uts" min="0" max="100" required placeholder="0 - 100"
+                        class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Nilai UAS (50%)</label>
+                    <input type="number" id="uas" min="0" max="100" required placeholder="0 - 100"
+                        class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-yellow-700 text-white font-bold py-3 rounded-lg hover:bg-yellow-800 transition duration-300">
+                    Hitung Nilai
+                </button>
+
+            </form>
+
+            <!-- Hasil Output JavaScript -->
+            <div id="hasil" class="hidden mt-6 p-4 rounded-lg text-center font-bold"></div>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-yellow-700 text-white text-center py-5">
+        © 2026 PortfolioKu By Komang Adi Armawan
+    </footer>
+
+    <!-- Script JavaScript -->
+    <script>
+        function hitungNilai(event) {
+            event.preventDefault();
+
+            // Ambil input nilai
+            const matkul = document.getElementById('matkul').value;
+            const nilaiTugas = parseFloat(document.getElementById('tugas').value);
+            const nilaiUts = parseFloat(document.getElementById('uts').value);
+            const nilaiUas = parseFloat(document.getElementById('uas').value);
+
+            // Hitung nilai akhir berdasarkan bobot
+            const nilaiAkhir = (nilaiTugas * 0.2) + (nilaiUts * 0.3) + (nilaiUas * 0.5);
+
+            // Tentukan Grade dan Status
+            let grade = '';
+            let status = '';
+            let colorClass = '';
+
+            if (nilaiAkhir >= 85) {
+                grade = 'A';
+                status = 'LULUS (Sangat Memuaskan)';
+                colorClass = 'bg-green-100 border border-green-500 text-green-700';
+            } else if (nilaiAkhir >= 70) {
+                grade = 'B';
+                status = 'LULUS (Memuaskan)';
+                colorClass = 'bg-blue-100 border border-blue-500 text-blue-700';
+            } else if (nilaiAkhir >= 55) {
+                grade = 'C';
+                status = 'LULUS (Cukup)';
+                colorClass = 'bg-yellow-100 border border-yellow-500 text-yellow-700';
+            } else if (nilaiAkhir >= 40) {
+                grade = 'D';
+                status = 'TIDAK LULUS';
+                colorClass = 'bg-orange-100 border border-orange-500 text-orange-700';
+            } else {
+                grade = 'E';
+                status = 'TIDAK LULUS';
+                colorClass = 'bg-red-100 border border-red-500 text-red-700';
+            }
+
+            const hasilDiv = document.getElementById('hasil');
+            hasilDiv.className = `mt-6 p-4 rounded-lg text-center ${colorClass}`;
+            hasilDiv.innerHTML = `
+                <p class="text-lg">Mata Kuliah: <strong>${matkul}</strong></p>
+                <p class="text-2xl my-2">Nilai Akhir: <strong>${nilaiAkhir.toFixed(2)}</strong> (Grade: ${grade})</p>
+                <p class="text-md">Status: <strong>${status}</strong></p>
+            `;
+            hasilDiv.classList.remove('hidden');
+        }
+    </script>
+
+</body>
+
+</html>
